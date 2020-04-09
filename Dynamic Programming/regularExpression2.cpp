@@ -26,7 +26,7 @@ int Solution::isMatch(const string A, const string B) {
     
     int n1 = B.length();
     int n2 = A.length();
-    int dp[n1 + 1][n2 + 1];
+    bool dp[n1 + 1][n2 + 1];
     dp[0][0] = 1;
     for(int i = 1; i <= n1; i++)
     {
