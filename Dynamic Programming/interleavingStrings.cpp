@@ -41,45 +41,42 @@ Explanation 2:
     
 int Solution::isInterleave(string A, string B, string C) {
     
-    map<char, int> m1, m2;
     int n1 = A.length();
     int n2 = B.length();
     int n3 = C.length();
     if(n3 != n1 + n2)
         return 0;
-    else
+    int dp[n1 + 1][n2 + 1];
+    dp[0][0] = 1;
+    for(int i = 1; i <= n1; i++)
     {
-        int j = 0;
-        for(int i = 0; i < n3; i++)
+        if(A[i - 1] == C[i - 1])
+            dp[i][0] = dp[i - 1][0];
+        else
+            dp[i][0] = 0;
+    }
+    for(int j = 1; j <= n2; j++)
+    {
+        if(B[j - 1] == C[j - 1])
+            dp[0][j] = dp[0][j - 1];
+        else
+            dp[0][j] = 0;
+    }
+    int k;
+    for(int i = 1; i <= n1; i++)
+    {
+        for(int j = 1; j <= n2; j++)
         {
-            if(A[j] == C[i])
-            {
-                m1[A[j]]++;
-                j++;
-            }
-        }
-        if(j < n1)
-            return 0;
-        j = 0;
-        for(int i = 0; i < n3; i++)
-        {
-            if(B[j] == C[i])
-            {
-                m1[B[j]]++;
-                j++;
-            }
-        }
-        if(j < n2)
-            return 0;
-        for(int i = 0; i < n3; i++)
-        {
-            m2[C[i]]++;
-        }
-        if(m1 != m2)
-        {
-            cout<<m1.size()<<m2.size();
-            return 0;
+            if(A[i - 1] == C[i + j - 1] && B[j - 1] == C[i + j - 1])
+                dp[i][j] = dp[i - 1][j] || dp[i][j - 1];
+            else if(A[i - 1] == C[i + j - 1])
+                dp[i][j] = dp[i - 1][j];
+            else if(B[j - 1] == C[i + j - 1])
+                dp[i][j] = dp[i][j - 1];
+            else
+                dp[i][j] = 0;
         }
     }
-    return 1;
+    
+    return dp[n1][n2];
 }
